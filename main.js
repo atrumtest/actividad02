@@ -57,6 +57,7 @@ app.post('/gatitos',function(req,res){
        }
        else {
            console.log('Conexión a BD exitosa');
+           console.log('Datos a obtenidos de req: '+JSON.stringify(req.body));
            // Obtener datos a insertar en BD
            var gatito = {
                nombre:req.body.nombre,
@@ -66,7 +67,6 @@ app.post('/gatitos',function(req,res){
                pelaje:req.body.pelaje,
                vacunas:req.body.vacunas
            };
-           console.log('Datos a insertar: '+JSON.stringify(req.body));
            // Acceder a collection
            var collection = db.db('actividad02').collection('gatito');
            // Insertar datos
@@ -91,6 +91,137 @@ app.post('/gatitos',function(req,res){
        }
            
     });
+});
+
+// Setvicio para consultar 1 gatito
+app.get('/gatitos/:id',function(req,res){
+    //Convertir ID en Objeto MongoDB
+    var IDgatito = require('mongodb').ObjectID(req.params.id);
+    // Conectarse a BD
+    MongoClient.connect(uri,function(err,db){
+       if(err){
+           console.log('Error al conectarse a la BD: '+err);
+       }
+       else {
+           // Acceder a collection
+           var collection = db.db('actividad02').collection('gatito');
+           // Encontrar gatito
+           collection.find({_id:IDgatito}).toArray(function(err,result){
+               if(result==""){
+                   console.log('No se encontró gatito');
+                   // Enviar código de estado no encontrado
+                   res.status(404);
+                   // Mostrar resultado en JSON
+                   res.json(result);
+                   // Cerrar BD
+                   db.close();
+               }
+               else{
+                   // Enviar código de estado OK
+                    res.status(200);
+                    // Mostrar resultado en JSON
+                    res.json(result);
+                    // Cerrar BD
+                    db.close();
+               }
+            }); 
+        }
+    });
+});
+
+// Setvicio para modificar 1 gatito
+app.put('/gatitos/:id',function(req,res){
+    //Convertir ID en Objeto MongoDB
+    var IDgatito = require('mongodb').ObjectID(req.params.id);
+    // Conectarse a BD
+    MongoClient.connect(uri,function(err,db){
+       if(err){
+           console.log('Error al conectarse a la BD: '+err);
+       }
+       else {
+           // Acceder a collection
+           var collection = db.db('actividad02').collection('gatito');
+           // Encontrar gatito
+           collection.find({_id:IDgatito}).toArray(function(err,result){
+               if(result==""){
+                   console.log('No se encontró gatito');
+                   // Enviar código de estado no encontrado
+                   res.status(404);
+                   // Mostrar resultado en JSON
+                   res.json(result);
+                   // Cerrar BD
+                   db.close();
+               }
+               else{
+                   // Obtener datos a insertar en BD
+                    var gatito = {
+                        nombre:req.body.nombre,
+                        genero:req.body.genero,
+                        edad:req.body.edad,
+                        esterilizado:req.body.esterilizado,
+                        pelaje:req.body.pelaje,
+                        vacunas:req.body.vacunas
+                    };
+                    collection.update({_id:IDgatito},{$set:gatito},function(err,result){
+                        if(err){
+                            console.log('Error al actualizar. Intenta más tarde');
+                        }
+                        else{
+                            // Enviar código de estado OK
+                            res.status(200);
+                            // Mostrar resultado en JSON
+                            res.json(result);
+                            // Cerrar BD
+                            db.close();
+                        }
+                    });
+               }
+            }); 
+        }
+    });
+});
+
+// Servicio para borrar 1 gatito
+app.delete('/gatitos/:id',function(req,res){
+   //Convertir ID en Objeto MongoDB
+    var IDgatito = require('mongodb').ObjectID(req.params.id);
+    // Conectarse a BD
+    MongoClient.connect(uri,function(err,db){
+       if(err){
+           console.log('Error al conectarse a la BD: '+err);
+       }
+       else {
+           // Acceder a collection
+           var collection = db.db('actividad02').collection('gatito');
+           // Encontrar gatito
+           collection.find({_id:IDgatito}).toArray(function(err,result){
+               if(result==""){
+                   console.log('No se encontró gatito');
+                   // Enviar código de estado no encontrado
+                   res.status(404);
+                   // Mostrar resultado en JSON
+                   res.json(result);
+                   // Cerrar BD
+                   db.close();
+               }
+               else{
+                    collection.remove({_id:IDgatito},function(err,result){
+                        if(err){
+                            console.log('Error al borrar. Intenta más tarde');
+                        }
+                        else{
+                            // Enviar código de estado OK
+                            res.status(200);
+                            // Mostrar resultado en JSON
+                            res.json(result);
+                            // Cerrar BD
+                            db.close();
+                        }
+                    });
+               }
+            }); 
+        }
+    }); 
 });
 
 // Configuración de servidor
