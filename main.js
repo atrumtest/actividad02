@@ -82,6 +82,7 @@ app.post('/gatitos',function(req,res){
                     res.status(201);
                     // Mostrar resultado en JSON
                     res.json({
+                        id:result.ops[0]._id,
                         insertado:true
                     });
                     // Cerrar BD
