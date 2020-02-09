@@ -170,7 +170,10 @@ app.put('/gatitos/:id',function(req,res){
                             // Enviar código de estado OK
                             res.status(200);
                             // Mostrar resultado en JSON
-                            res.json(result);
+                            res.json({
+                                id:IDgatito,
+                                modificado:true
+                            });
                             // Cerrar BD
                             db.close();
                         }
@@ -212,8 +215,11 @@ app.delete('/gatitos/:id',function(req,res){
                         else{
                             // Enviar código de estado OK
                             res.status(200);
-                            // Mostrar resultado en JSON
-                            res.json(result);
+                             // Mostrar resultado en JSON
+                            res.json({
+                                id:IDgatito,
+                                eliminado:true
+                            });
                             // Cerrar BD
                             db.close();
                         }
