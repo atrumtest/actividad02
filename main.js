@@ -113,7 +113,9 @@ app.get('/gatitos/:id',function(req,res){
                    // Enviar código de estado no encontrado
                    res.status(404);
                    // Mostrar resultado en JSON
-                   res.json(result);
+                   res.json({
+                        mensaje:"no encontado"
+                    });
                    // Cerrar BD
                    db.close();
                }
@@ -149,7 +151,9 @@ app.put('/gatitos/:id',function(req,res){
                    // Enviar código de estado no encontrado
                    res.status(404);
                    // Mostrar resultado en JSON
-                   res.json(result);
+                   res.json({
+                        mensaje:"no encontado"
+                    });
                    // Cerrar BD
                    db.close();
                }
