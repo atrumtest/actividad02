@@ -1,0 +1,21 @@
+{
+    "name": "actividad02",
+    "version": "1.0.0",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "author": "atrumgeost",
+    "contributors": [],
+    "dependencies": {
+        "body-parser": "^1.15.2",
+        "express": "^4.15.4",
+        "mongodb": "^3.5.2"
+    },
+    "engines": {
+        "node": "12.14.1"
+    }
+}
